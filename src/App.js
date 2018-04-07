@@ -1,27 +1,67 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import GuestList from './GuestList';
 
 class App extends Component {
+
+  state = {
+    guests:[
+      {
+        name: 'Kleon',
+        isConfirmed:false,
+        isEditing:false
+      },
+      {
+        name: 'Angelica',
+        isConfirmed:true,
+        isEditing:false
+      },
+      {
+        name: 'May',
+        isConfirmed:true,
+        isEditing:true
+      }
+    ]
+  }
+
+
+
+  toggleConfirmationAt = indexToChange =>
+    this.setState({
+      guests:this.state.guests.map((guest,index)=>{
+        if (index === indexToChange){ {/* I want to make a change only if the index matches */}
+          return {
+            ...guest,
+            isConfirmed: !guest.isConfirmed
+          }
+        }
+        return guest;  {/* if the index doesn't match I return the same object and leaving it untouched */}
+      })
+    });
+
+  getTotalInvitied = () => this.state.guests.length;
+  //getAttendingGuests = () =>
+  //getUnconfirmedGuests = () =>
+
   render() {
     return (
-      <div class="App">
+      <div className="App">
         <header>
           <h1>RSVP</h1>
-          <p>A Treehouse App</p>
+          <p>My App</p>
           <form>
               <input type="text" value="Safia" placeholder="Invite Someone"/>
               <button type="submit" name="submit" value="submit">Submit</button>
           </form>
         </header>
-        <div class="main">
+        <div className="main">
           <div>
             <h2>Invitees</h2>
             <label>
               <input type="checkbox"/> Hide those who havent responded
             </label>
           </div>
-          <table class="counter">
+          <table className="counter">
             <tbody>
               <tr>
                 <td>Attending:</td>
@@ -37,32 +77,10 @@ class App extends Component {
               </tr>
             </tbody>
           </table>
-          <ul>
-            <li class="pending"><span>Safia</span></li>
-            <li class="responded"><span>Iver</span>
-              <label>
-                <input type="checkbox" checked/> Confirmed
-              </label>
-              <button>edit</button>
-              <button>remove</button>
-            </li>
-            <li class="responded">
-              <span>Corrina</span>
-              <label>
-                <input type="checkbox" checked/> Confirmed
-              </label>
-              <button>edit</button>
-              <button>remove</button>
-            </li>
-            <li>
-              <span>Joel</span>
-              <label>
-                <input type="checkbox"/> Confirmed
-              </label>
-              <button>edit</button>
-              <button>remove</button>
-            </li>
-          </ul>
+          <GuestList
+           guests ={this.state.guests}
+           toggleConfirmationAt = {this.toggleConfirmationAt}
+           />
         </div>
       </div>
     );
