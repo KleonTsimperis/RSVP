@@ -26,18 +26,29 @@ class App extends Component {
 
 
 
-  toggleConfirmationAt = indexToChange =>
+  toggleGuestPropertyAt = (property,indexToChange) =>
     this.setState({
       guests:this.state.guests.map((guest,index)=>{
         if (index === indexToChange){ {/* I want to make a change only if the index matches */}
           return {
             ...guest,
-            isConfirmed: !guest.isConfirmed
+            [property]: !guest[property]
           }
         }
         return guest;  {/* if the index doesn't match I return the same object and leaving it untouched */}
       })
     });
+
+
+
+  toggleConfirmationAt = index =>
+    this.toggleGuestPropertyAt("isConfirmed", index);
+
+  toggleEditingAt = index =>
+    this.toggleGuestPropertyAt("isEditing", index);
+
+
+
 
   getTotalInvitied = () => this.state.guests.length;
   //getAttendingGuests = () =>
@@ -80,6 +91,7 @@ class App extends Component {
           <GuestList
            guests ={this.state.guests}
            toggleConfirmationAt = {this.toggleConfirmationAt}
+           toggleEditingAt = {this.toggleEditingAt}
            />
         </div>
       </div>
