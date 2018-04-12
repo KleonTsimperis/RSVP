@@ -5,22 +5,22 @@ import PendingGuest from './PendingGuest';
 
 const GuestList = props =>
    <ul>
-   <PendingGuest name={props.pendingGuest}/>
-   {/*when isFiltered is false, checkbox is not selected and all guests appear. Currently isFiltered is set to false from the App component so now I use !props.isFiltered to reverse console.log(require('util').inspect(, { depth: null }));*/}
-   {props.guests
-        .filter(guest=> !props.isFiltered || guest.isConfirmed)
-        .map((guest,index) =>
-          <Guest
-          key={index}
-          name={guest.name}
-          isConfirmed={guest.isConfirmed}
-          isEditing={guest.isEditing}
-          handleConfirmation={()=>props.toggleConfirmationAt(index)}
-          handleToggleEditing={()=>props.toggleEditingAt(index)}
-          setName={text=>props.setNameAt(text,index)}
-          handleRemove={()=>props.removeGuestAt(index)}
-         />
-    )}
+     <PendingGuest name={props.pendingGuest}/>
+     {/*when isFiltered is false, checkbox is not selected and all guests appear. Currently isFiltered is set to false from the App component so now I use !props.isFiltered to reverse console.log(require('util').inspect(, { depth: null }));*/}
+       {props.guests
+            .filter(guest=> !props.isFiltered || guest.isConfirmed)
+            .map((guest,index) =>
+              <Guest
+                key={index}
+                name={guest.name}
+                isConfirmed={guest.isConfirmed}
+                isEditing={guest.isEditing}
+                handleConfirmation={()=>props.toggleConfirmationAt(guest.id)}
+                handleToggleEditing={()=>props.toggleEditingAt(guest.id)}
+                setName={text=>props.setNameAt(text,guest.id)}
+                handleRemove={()=>props.removeGuestAt(guest.id)}
+             />
+        )}
   </ul>;
 
 

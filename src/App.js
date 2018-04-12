@@ -8,66 +8,56 @@ import MainContent from './MainContent';
 
 class App extends Component {
 
-  state = {
-    isFiltered:false,
-    pendingGuest:"",
-    guests:[
-      {
-        name: 'Kleon',
-        isConfirmed:false,
-        isEditing:false
-      },
-      {
-        name: 'Angelica',
-        isConfirmed:true,
-        isEditing:false
-      },
-      {
-        name: 'May',
-        isConfirmed:true,
-        isEditing:true
-      }
-    ]
-  }
+    state = {
+      isFiltered:false,
+      pendingGuest:"",
+      guests:[],
+
+    };
+
+  lastGuestId = 0;
+
+  newGuestId = () => {
+    const id = this.lastGuestId;
+    this.lastGuestId += 1;
+    return id;
+  };
 
 
 
-  toggleGuestPropertyAt = (property,indexToChange) =>
+  toggleGuestPropertyAt = (property,id) =>
     this.setState({
-      guests:this.state.guests.map((guest,index)=>{
-        if (index === indexToChange){ {/* I want to make a change only if the index matches */}
+      guests:this.state.guests.map(guest => {
+        if (id === guest.id){ {/* I want to make a change only if the index matches */}
           return {
             ...guest,
             [property]: !guest[property]
-          }
+          };
         }
         return guest;  {/* if the index doesn't match I return the same object and leaving it untouched */}
       })
     });
 
-  toggleConfirmationAt = index =>
-    this.toggleGuestPropertyAt("isConfirmed", index);
+  toggleConfirmationAt = id =>
+    this.toggleGuestPropertyAt("isConfirmed", id);
 
-  removeGuestAt = index =>
+  toggleEditingAt = id =>
+    this.toggleGuestPropertyAt("isEditing", id);
+
+  removeGuestAt = id =>
     this.setState({
-      guests:[
-        ...this.state.guests.slice(0,index),
-        ...this.state.guests.slice(index+1)
-      ]
+      guests: this.state.guests.filter(guest => id !== guest.id)
     });
 
-  toggleEditingAt = index =>
-    this.toggleGuestPropertyAt("isEditing", index);
 
-
-  setNameAt = (name,indexToChange) =>
+  setNameAt = (name,id) =>
     this.setState({
-      guests:this.state.guests.map((guest,index)=>{
-        if (index === indexToChange){ {/* I want to make a change only if the index matches */}
+      guests:this.state.guests.map(guest=>{
+        if (id === guest.id){ {/* I want to make a change only if the index matches */}
           return {
             ...guest,
             name
-          }
+          };
         }
         return guest;  {/* if the index doesn't match I return the same object and leaving it untouched */}
       })
@@ -81,12 +71,14 @@ class App extends Component {
 
   newGuestSubmitHandler = e => {
     e.preventDefault();
+    const id = this.newGuestId();
     this.setState({
       guests:[
         {
           name:this.state.pendingGuest,
           isConfirmed:false,
-          isEditing:false
+          isEditing:false,
+          id:id
         },
         ...this.state.guests
       ],
@@ -121,8 +113,6 @@ class App extends Component {
          handleNameInput = {this.handleNameInput.bind(this)}
         />
 
-
-
         <MainContent
          toggleFilter={this.toggleFilter}
          isFiltered={this.state.isFiltered}
@@ -135,7 +125,6 @@ class App extends Component {
          setNameAt={this.setNameAt}
          removeGuestAt={this.removeGuestAt}
          pendingGuest={this.state.pendingGuest}
-
         />
 
 
