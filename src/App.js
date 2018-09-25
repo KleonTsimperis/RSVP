@@ -28,13 +28,13 @@ class App extends Component {
   toggleGuestPropertyAt = (property,id) =>
     this.setState({
       guests:this.state.guests.map(guest => {
-        if (id === guest.id){ {/* I want to make a change only if the index matches */}
+        if (id === guest.id){
           return {
             ...guest,
             [property]: !guest[property]
           };
         }
-        return guest;  {/* if the index doesn't match I return the same object and leaving it untouched */}
+        return guest;
       })
     });
 
@@ -53,13 +53,13 @@ class App extends Component {
   setNameAt = (name,id) =>
     this.setState({
       guests:this.state.guests.map(guest=>{
-        if (id === guest.id){ {/* I want to make a change only if the index matches */}
+        if (id === guest.id){
           return {
             ...guest,
             name
           };
         }
-        return guest;  {/* if the index doesn't match I return the same object and leaving it untouched */}
+        return guest;
       })
     });
 
@@ -69,22 +69,22 @@ class App extends Component {
     });
 
 
-  newGuestSubmitHandler = e => {
-    e.preventDefault();
-    const id = this.newGuestId();
-    this.setState({
-      guests:[
-        {
-          name:this.state.pendingGuest,
-          isConfirmed:false,
-          isEditing:false,
-          id:id
-        },
-        ...this.state.guests
-      ],
-      pendingGuest:""
-    });
-  }
+    newGuestSubmitHandler = e => {
+      e.preventDefault();
+      const id = this.newGuestId();
+      this.setState({
+        guests:[
+          {
+            name:this.state.pendingGuest,
+            isConfirmed:false,
+            isEditing:false,
+            id:id
+          },
+          ...this.state.guests
+        ],
+        pendingGuest:""
+      });
+    }
 
   getTotalInvitied = () => this.state.guests.length;
 
@@ -94,11 +94,11 @@ class App extends Component {
     0);
 
 
-  handleNameInput(e){
+  handleNameInput = e =>
     this.setState({
       pendingGuest:e.target.value
     });
-  }
+
 
   render() {
     const totalInvited = this.getTotalInvitied();
@@ -110,7 +110,7 @@ class App extends Component {
         <Header
          newGuestSubmitHandler={this.newGuestSubmitHandler}
          pendingGuest={this.state.pendingGuest}
-         handleNameInput = {this.handleNameInput.bind(this)}
+         handleNameInput = {this.handleNameInput}
         />
 
         <MainContent
